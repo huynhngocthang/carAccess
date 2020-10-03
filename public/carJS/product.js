@@ -7,7 +7,7 @@ function show() {
         processing: true ,
         serverSide: true,
         destroy : true ,
-        ajax: 'http://127.0.0.1:8000/admin/tableproduct',
+        ajax: 'admin/tableproduct',
         columns: [
             {data: 'name'},
             {data: 'description'},
@@ -21,7 +21,7 @@ function show() {
 function createProduct() {
     $.ajax({
         method: 'get',
-        url: 'http://127.0.0.1:8000/admin/createProduct' ,
+        url: 'admin/createProduct' ,
         dataType: 'json',
         data: {
             name : $('#name').val(),
@@ -64,7 +64,7 @@ function createProduct() {
 $(document).on('click','.edit', function() {
     var id = $(this).attr('id') ;
     $.ajax({ 
-        url:'http://127.0.0.1:8000/admin/product/edit/'+id,
+        url:'admin/product/edit/'+id,
         dataType: 'json',
         success: function(data) {
              $('#editName').val(data.name) ;
@@ -78,7 +78,7 @@ $(document).on('click','.edit', function() {
 
 function updateTable() {
     $.ajax({
-        url:'http://127.0.0.1:8000/admin/product/update' ,
+        url:'admin/product/update' ,
         dataType: 'json',
         data : {
             hidden_id : $('#hidden_id').val() ,
@@ -103,7 +103,7 @@ $(document).on('click','.remove', function () {
 $('#removeProduct').click(function() {
   var  $id =  $('#remove_id').val() ;
     $.ajax({
-        url: 'http://127.0.0.1:8000/admin/product/remove/'+$id,
+        url: 'admin/product/remove/'+$id,
         dataType: 'json',
         success: function() {
             show() ;
