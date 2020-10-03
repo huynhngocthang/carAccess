@@ -7,7 +7,7 @@ function show() {
         processing: true ,
         serverSide: true,
         destroy : true ,
-        ajax: 'admin/tableproduct',
+        ajax: 'tableproduct',
         columns: [
             {data: 'name'},
             {data: 'description'},
@@ -21,7 +21,7 @@ function show() {
 function createProduct() {
     $.ajax({
         method: 'get',
-        url: 'admin/createProduct' ,
+        url: 'createProduct' ,
         dataType: 'json',
         data: {
             name : $('#name').val(),
@@ -64,7 +64,7 @@ function createProduct() {
 $(document).on('click','.edit', function() {
     var id = $(this).attr('id') ;
     $.ajax({ 
-        url:'admin/product/edit/'+id,
+        url:'product/edit/'+id,
         dataType: 'json',
         success: function(data) {
              $('#editName').val(data.name) ;
@@ -78,7 +78,7 @@ $(document).on('click','.edit', function() {
 
 function updateTable() {
     $.ajax({
-        url:'admin/product/update' ,
+        url:'product/update' ,
         dataType: 'json',
         data : {
             hidden_id : $('#hidden_id').val() ,
@@ -103,7 +103,7 @@ $(document).on('click','.remove', function () {
 $('#removeProduct').click(function() {
   var  $id =  $('#remove_id').val() ;
     $.ajax({
-        url: 'admin/product/remove/'+$id,
+        url: 'product/remove/'+$id,
         dataType: 'json',
         success: function() {
             show() ;
