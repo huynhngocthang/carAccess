@@ -42,7 +42,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/product/update','ProductController@updateProduct')->name('updateProduct') ;
     Route::get('/product/remove/{id}','ProductController@removeProduct')->name('removeProduct') ;
     Route::get('/product/car/{id}','ProductController@productCar')->name('productCar') ;
-    //productcar
+    //car
     Route::get('/car/List','CarController@index')->name('carList') ;
     Route::get('/car/create','CarController@createCar')->name('car.create') ;
     Route::get('/car/edit/{id}','CarController@editCar')->name('car.edit') ;
