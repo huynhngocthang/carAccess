@@ -10,11 +10,7 @@ class Maker extends Model
     use SoftDeletes;
     protected $table = "makers" ;
 
-    public function ProductCar() {
-        return $this->hasMany('App/productCar','id') ;
-    }
-
     public function carModel() {
-        return $this->hasMany('App/cardmodel','id') ;
+        return $this->hasMany(cardmodel::class,'maker_id','id') ;
     }
 }

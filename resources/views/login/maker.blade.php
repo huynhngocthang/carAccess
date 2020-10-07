@@ -5,8 +5,6 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Tên hãng xe</th>
-            <th scope="col">created_at</th>
-            <th scope="col">updated_at</th>
             <th>Sửa xóa</th>
         </tr>
         </thead>
@@ -30,12 +28,6 @@
                <label class="control-label col-md-4" >Name</label>
                <div class="col-md-8">
                 <input type="text" name="name"  id="name" class="form-control" />
-               </div>
-               <div class="form-group">
-                <label class="control-label col-md-4" >Ngày thêm</label>
-                <div class="col-md-8">
-                    <input type="date" name="date" id="date" class="form-control" />
-                   </div>
                </div>
               </div>
                    <br />

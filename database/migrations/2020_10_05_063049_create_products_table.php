@@ -13,17 +13,18 @@ class CreateProductsTable extends Migration
      */
     public function up()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('name') ;
-            $table->integer('price') ;
             $table->string('description') ;
-            $table->unsignedBigInteger('carModel_id')->nullable();
-            $table->unsignedBigInteger('brand_id');
-            $table->foreign('carModel_id')->references('id')->on('cardmodels') ;
+            $table->integer('price') ;
+            $table->unsignedBigInteger('brand_id') ;
             $table->foreign('brand_id')->references('id')->on('brands') ;
+            $table->softDeletes() ;
             $table->timestamps();
         });
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -33,6 +34,8 @@ class CreateProductsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('products');
+        Schema::enableForeignKeyConstraints();
     }
 }

@@ -9,7 +9,7 @@ class brand extends Model
     protected $table = 'brands' ;
 
     public function Product() {
-        return $this->hasMany('App\product','brand_id','id') ;
+        return $this->hasMany('App\Product','brand_id','id') ;
     }
 
 }

@@ -11,15 +11,11 @@ class cardmodel extends Model
 
     protected $table = 'cardmodels' ;
 
-    public function Product() {
-        return $this->hasMany('App\product','id') ;
+    public function products() {
+        return $this->hasMany(Car::class,'carModel_id','id') ;
     }
 
-    public function ProductCar() {
-        return $this->hasMany('App\productCar','id') ;
-    }
-
-    public function Maker() {
-        return $this->belongsTo('App/Maker','maker_id','id') ;
+    public function maker() {
+        return $this->belongsTo(Maker::class,'maker_id','id') ;
     }
 }

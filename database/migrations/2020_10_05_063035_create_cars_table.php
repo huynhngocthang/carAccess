@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductCarsTable extends Migration
+class CreateCarsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,16 @@ class CreateProductCarsTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_cars', function (Blueprint $table) {
-            $table->id();
+        Schema::disableForeignKeyConstraints();
+        Schema::create('cars', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('name') ;
-            $table->unsignedBigInteger('maker_id');
-            $table->unsignedBigInteger('carModel_id');
-            $table->foreign('maker_id')->references('id')->on('makers') ;
+            $table->unsignedBigInteger('carModel_id') ;;
             $table->foreign('carModel_id')->references('id')->on('cardmodels') ;
+            $table->softDeletes() ;
             $table->timestamps();
         });
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -31,6 +32,6 @@ class CreateProductCarsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_cars');
+        Schema::dropIfExists('cars');
     }
 }

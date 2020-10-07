@@ -1,25 +1,18 @@
 
 function show() {
-    $('#productTable').DataTable({
+    $('#carTable').DataTable({
         processing: true,
         serverSide: true,
         destroy : true,
-        ajax: 'admin/product/list',
+        ajax: 'admin/car/List',
         columns  : [
+            {data: 'id'} ,
             {data : 'name'},
-            {data: 'description'},
-            {data: 'price'},
-            {data: 'brand'},
+            {data: 'carModel'},
             {data:'action'},
-        ],
+        ]
     }) ;  
 }
-
-
-
-$(function() {
-    $(".chzn-select").chosen({width:"100%"});
-});
 
 $(document).ready(function() {
     show() ;
@@ -38,29 +31,17 @@ $(document).ready(function() {
         var action_url = '' ;
 
         if($('#action').val() == 'Add') { 
-            action_url = "admin/product/create" ;
+            action_url = "admin/car/create" ;
         }
 
         if($('#action').val() == 'Edit')
         {
-        action_url = "admin/product/update";
+        action_url = "admin/car/update";
         }
-        var carArray = [] ;
-
-        $('select[name="car_id[]"] option:selected').each(function() {
-            carArray.push($(this).val()) ;
-        }) ,
     $.ajax({
         url: action_url,
         method: 'get',
-        data: {
-            name : $('#name').val() ,
-            description: $('#description').val(),
-            price : $('#price').val() ,
-            brand : $('#brand').val(),
-            hidden_id : $('#hidden_id').val(),
-            carArray,
-        },
+        data:$(this).serialize(),
         dataType: 'json',
         success:function(data) {
             if(data.errors) 
@@ -72,7 +53,6 @@ $(document).ready(function() {
                 }
             }
             if(data.success) {
-                $('#car').val('').trigger("chosen:updated");
                 $('#form_result').html('') ;
                 $('#sample_form')[0].reset();
                 show() ;
@@ -87,24 +67,16 @@ $(document).ready(function() {
    $(document).on('click', '.edit' , function () {
        var id = $(this).attr('id') ;
         $.ajax({
-            url: 'admin/product/edit/'+id,
+            url: 'admin/car/edit/'+id,
             dataType: 'json',
             success:function(data) {
-
                 $('.modal-title').text('Edit Record');
                 $('#action_button').val('Edit');
                 $('#action').val('Edit');
                 $('#formModal').modal('show');
-                $('#name').val(data.result.name);
-                $('#description').val(data.result.description);
-                $('#price').val(data.result.price);
-                $('#brand').val(data.result.brand_id);
-                $('#hidden_id').val(data.result.id);
-                var id = [];
-                for(i=0 ; i<data.car.length; i++) {
-                    id.push(data.car[i].id) ;
-                }
-                $('#car').val(id).trigger("chosen:updated");
+                $('#car_name').val(data.result.name);
+                $('#model_car').val(data.result.carModel_id);
+                $('#hidden_id').val(id);
             }
         })
    })
@@ -117,7 +89,7 @@ $(document).ready(function() {
 
    $('#ok_button').click(function() {
        $.ajax({
-           url: 'admin/product/remove/'+carID,
+           url: 'admin/car/remove/'+carID,
            beforeSend: function(){
                $('#ok_button').html(`<button class="btn " type="button" disabled>
                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
@@ -134,30 +106,6 @@ $(document).ready(function() {
            }
        })
    })
-
-   $(document).on('click','.productCar', function() {
-       var id = $(this).attr('id');
-    $.ajax({
-        url: 'admin/product/car/'+id,
-        dataType: 'json',
-        success: function(data) {
-            $('#carTb tbody').html('') ;
-            $('#accessary').html(data.productCar.name) ;
-            var carList = [] ;
-            for(i=0; i<data.productCar.cars.length;i++) { 
-                carList.push(data.productCar.cars[i].name) ;
-            }
-            $('#productListModel').modal('show') ;
-            $.each(carList, function(i, v){
-                $('#carTb tbody').append(
-                    ` <tr>
-                        <td>${v}</td>
-                    </tr>`
-                );
-            }) ;
-        },
-    }) ; 
-})
 
 
 })

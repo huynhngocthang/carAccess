@@ -36,12 +36,20 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/carmodel/update','CardmodelController@updateCar')->name('updateCar') ;
     Route::get('/carmodel/delete/{id}','CardmodelController@deleteCar')->name('deleteCar') ;
     // product
-    Route::get('/product','ProductController@index')->name('productList') ;
-    Route::get('tableproduct','ProductController@tableProduct')->name('tableProduct');
-    Route::get('/createProduct','ProductController@createProduct')->name('createProduct') ;
+    Route::get('/product/list','ProductController@index')->name('productList') ;
+    Route::get('/product/create','ProductController@createProduct')->name('createProduct') ;
     Route::get('/product/edit/{id}','ProductController@editProduct')->name('editProduct') ;
     Route::get('/product/update','ProductController@updateProduct')->name('updateProduct') ;
     Route::get('/product/remove/{id}','ProductController@removeProduct')->name('removeProduct') ;
+    Route::get('/product/car/{id}','ProductController@productCar')->name('productCar') ;
+    //productcar
+    Route::get('/car/List','CarController@index')->name('carList') ;
+    Route::get('/car/create','CarController@createCar')->name('car.create') ;
+    Route::get('/car/edit/{id}','CarController@editCar')->name('car.edit') ;
+    Route::get('/car/update','CarController@updateCar')->name('car.update') ;
+    Route::get('/car/edit/{id}','CarController@editCar')->name('car.edit') ;
+    Route::get('/car/remove/{id}','CarController@deleteCar')->name('car.remove') ;
+
 });
 
 Auth::routes();

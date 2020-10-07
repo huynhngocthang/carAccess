@@ -28,8 +28,7 @@ class MakerController extends Controller
 
     public function createProductCar(Request $request) {
         $validatedData = array (
-            'name' => 'required ' ,
-            'date' => 'required',
+            'name' => 'required  ' ,
         ) ;
         $error = Validator::make($request->all(), $validatedData);
         if($error->fails()) {
@@ -41,7 +40,6 @@ class MakerController extends Controller
 
         $makers = new Maker ;
         $makers->name = $request->name;
-        $makers->created_at = $request->date ;
         $makers->save() ;
 
         return response()->json(['success'=>'Thêm thành công']) ;
@@ -57,7 +55,6 @@ class MakerController extends Controller
     public function updateProductCar(Request $request ) {
         $validatedData = array (
             'name' => 'required ' ,
-            'date' => 'required',
         ) ;
         $error = Validator::make($request->all(), $validatedData);
         if($error->fails()) {
@@ -68,7 +65,6 @@ class MakerController extends Controller
 
         $maker = Maker::findOrFail($request->hidden_id) ;
         $maker->name = $request->name ;
-        $maker->created_at = $request->date ;
 
         $maker->save() ;
 

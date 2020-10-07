@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call(BrandSeeder::class) ;
         $this->call(CardmodelSeeder::class) ;
         $this->call(ProductSeeder::class) ;
-        $this->call(ProductcarSeeder::class) ;
+        $this->call(carSeeder::class) ;
         $this->call(UserSeeder::class) ;
     }
 }

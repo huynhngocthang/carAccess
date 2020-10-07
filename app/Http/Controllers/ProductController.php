@@ -3,85 +3,127 @@
 namespace App\Http\Controllers;
 
 use App\brand;
-use App\cardmodel;
+use App\Car;
+use App\Product;
 use Illuminate\Http\Request;
-use App\product ;
-use Yajra\DataTables\Facades\DataTables;
+use Yajra\DataTables\Facades\DataTables ;
+use Illuminate\Support\Facades\Validator ;
 
 class ProductController extends Controller
 {
-    public function index() {
-        
-        $brands = brand::all() ;
-        $carmodels = cardmodel::all() ;
-        return view('login.productList')
-        ->with('carmodels', $carmodels)
-        ->with('brands', $brands) ;
-    }
+    public function index(Request $request) {
 
-    public function tableProduct(Request $request) {
-        $products = product::select('products.id','products.name','products.price','products.description','brands.name AS brand')
-        ->join('brands','brands.id','=','products.brand_id')
-        ->get();
+        if($request->ajax()) {
+            $products = Product::select('products.id','products.name','products.description','products.price','brands.name AS brand')
+                        ->join('brands','brands.id','=','products.brand_id')
+                        ->get() ;
 
-        return DataTables::of($products)
+            return DataTables::of($products)
                 ->addColumn('action', function($products) {
-                    $a = '<a href="" class="edit" id="'.$products->id.'" data-toggle="modal"  data-target=".editTable" ><i style="font-size:24px" class="fa">&#xf0ad;</i></a>' ; 
-                    $a .=  '<a href="" class="remove" id="'.$products->id.'" data-toggle="modal"  data-target="#removeTable"><i class="material-icons">&#xe872;</i></a>' ;
-                        return $a ;
+                    $button = '<button type="button" name="edit" id="'.$products->id.'" class="edit btn btn-primary btn-sm">Edit</button>' ;
+                    $button.= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$products->id.'" class="delete btn btn-danger btn-sm">Delete</button>' ;
+                return $button ;
+            })
+                ->addColumn('name', function($products) {
+                    $link = '<a class="productCar"  id="'.$products->id.'">'.$products->name.'</a>' ;
+                    return $link ;
                 })
-                ->rawColumns([ 'action'])
-                ->make(true) ;
-    }
+            ->rawColumns(['action','name'])
+            ->make(true) ; 
+     }
 
+     $brands = brand::all() ;
+     $cars = Car::all() ;
+     return view('login.productList')->with('brands', $brands)
+                                    ->with('cars', $cars) ;
+    
+    }
 
     public function createProduct(Request $request) {
+        // dd($request) ;
+        $validatedData = array (
+            'name' => 'required ' ,
+            'description' => 'required ' ,
+            'price' => 'required ' ,
+            'brand' => 'required ' ,
+        ) ;
+        $error = Validator::make($request->all(), $validatedData);
+        if($error->fails()) {
+ 
+         return response()->json(['errors' => $error->errors()->all()]);
+ 
+        }
+ 
 
-        $validatedData = $request->validate([
-            'name' => 'required|unique:products,name',
-            'description' => 'required',
-            'price' => 'required',
-            'brand' => 'required'
-        ]) ;
-
-        $products = new product ;
-        $products->name = $request->name ;
-        $products->description = $request->description ;
-        $products->price = $request->price ;
-        $products->brand_id = $request->brand ;
-
+        $products = new Product ;
+        $products->name = $request->name;
+        $products->description = $request->description;
+        $products->price = $request->price;
+        $products->brand_id = $request->brand;
         $products->save() ;
+        // dd($request->carArray);
+        foreach($request->carArray as $value) {
+            $products->cars()->attach($value);
+        } 
+       
 
-        return response()->json($products , 200, $validatedData) ;
+
+        return response()->json(['success'=>'Thêm thành công']) ;
+
     }
 
-    public function editProduct( $id) { 
-  
-        $products = product::findOrFail($id) ;
+    public function editProduct($id) {
+        $product = Product::findOrFail($id) ;
 
-        
-        return response()->json($products,200) ;
+       $car = $product->cars;
 
+        return response()->json(['result' => $product, 'car' => $car]) ;
     }
 
     public function updateProduct(Request $request ) {
+        $validatedData = array (
+            'name' => 'required ' ,
+            'description' => 'required ' ,
+            'price' => 'required ' ,
+            'brand' => 'required ' ,
+        ) ;
+        $error = Validator::make($request->all(), $validatedData);
+        if($error->fails()) {
+ 
+         return response()->json(['errors' => $error->errors()->all()]);
 
-        $product = product::findOrFail($request->hidden_id) ;
-  
-        $product->name = $request->editName ;
-        $product->description = $request->editDescription ;
-        $product->price = $request->editPrice ;
-        $product->brand_id = $request->editBrand ;
-        $product->save() ;
+        }
+ 
 
-        return response()->json($product ,200 ) ;
+        $product = Product::findOrFail($request->hidden_id) ;
+        $product->name = $request->name ;
+        $product->description = $request->description;
+        $product->price = $request->price;
+        $product->brand_id = $request->brand;
+        $product->save()  ;
+        $product->cars()->detach();
+        foreach($request->carArray as $value) {
+            $sync_data [] = $value ;
+        } 
+        $product->cars()->attach($sync_data) ;
+         
+
+
+        return response()->json(['success' => 'Sửa thành công']) ;  
     }
 
     public function removeProduct($id) {
-        $product = product::findOrFail($id) ;
-        $product->delete() ;
-        return response()->json($product,200) ;
-     }
-   
 
+        $product = Product::findOrFail($id) ;
+        $product->cars()->detach() ;
+        $product->delete() ;
+    }
+
+    public function productCar($id) {
+        $product = Product::findOrFail($id) ;
+        
+        $product->cars   ;
+
+        return response()->json(['productCar' => $product]) ;
+    } 
 }

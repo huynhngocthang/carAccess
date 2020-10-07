@@ -4,16 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class product extends Model
+class Product extends Model
 {
-    protected $table = 'products' ;
+    public function brand() {
+        return $this->hasMany(brand::class,'brand_id','id') ;
+    }
 
-   public function Brand() {
-        return $this->belongsTo('App\brand','id') ;
-   }
-
-   public function carModel() {
-       return $this->belongsTo('App\carmodel','carModel_id','id') ;
-   }
-
+    public function cars() {    
+        return $this->belongsToMany(Car::class,'car_product','product_id','car_id') ;
+    }
 }

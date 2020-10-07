@@ -4,7 +4,7 @@ function show() {
         processing: true,
         serverSide: true,
         destroy : true,
-        ajax: 'carmodel',
+        ajax: 'admin/carmodel',
         columns  : [
             {data: 'id'} ,
             {data : 'name'},
@@ -31,12 +31,12 @@ $(document).ready(function() {
         var action_url = '' ;
 
         if($('#action').val() == 'Add') { 
-            action_url = "carmodel/create" ;
+            action_url = "admin/carmodel/create" ;
         }
 
         if($('#action').val() == 'Edit')
         {
-        action_url = "carmodel/update";
+        action_url = "admin/carmodel/update";
         }
     $.ajax({
         url: action_url,
@@ -67,7 +67,7 @@ $(document).ready(function() {
    $(document).on('click', '.edit' , function () {
        var id = $(this).attr('id') ;
         $.ajax({
-            url: 'carmodel/edit/'+id,
+            url: 'admin/carmodel/edit/'+id,
             dataType: 'json',
             success:function(data) {
                 $('.modal-title').text('Edit Record');
@@ -90,7 +90,7 @@ $(document).ready(function() {
 
    $('#ok_button').click(function() {
        $.ajax({
-           url: 'carmodel/delete/'+carID,
+           url: 'admin/carmodel/delete/'+carID,
            beforeSend: function(){
                $('#ok_button').html(`<button class="btn " type="button" disabled>
                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
