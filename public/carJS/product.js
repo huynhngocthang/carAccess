@@ -4,7 +4,7 @@ function show() {
         processing: true,
         serverSide: true,
         destroy : true,
-        ajax: 'product/list',
+        ajax: '/admin/product/list',
         columns  : [
             {data : 'name'},
             {data: 'description'},
@@ -38,12 +38,12 @@ $(document).ready(function() {
         var action_url = '' ;
 
         if($('#action').val() == 'Add') { 
-            action_url = "product/create" ;
+            action_url = "/admin/product/create" ;
         }
 
         if($('#action').val() == 'Edit')
         {
-        action_url = "product/update";
+        action_url = "/admin/product/update";
         }
         var carArray = [] ;
 
@@ -87,7 +87,7 @@ $(document).ready(function() {
    $(document).on('click', '.edit' , function () {
        var id = $(this).attr('id') ;
         $.ajax({
-            url: 'product/edit/'+id,
+            url: '/admin/product/edit/'+id,
             dataType: 'json',
             success:function(data) {
 
@@ -117,7 +117,7 @@ $(document).ready(function() {
 
    $('#ok_button').click(function() {
        $.ajax({
-           url: 'product/remove/'+carID,
+           url: '/admin/product/remove/'+carID,
            beforeSend: function(){
                $('#ok_button').html(`<button class="btn " type="button" disabled>
                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
@@ -138,7 +138,7 @@ $(document).ready(function() {
    $(document).on('click','.productCar', function() {
        var id = $(this).attr('id');
     $.ajax({
-        url: 'product/car/'+id,
+        url: '/admin/product/car/'+id,
         dataType: 'json',
         success: function(data) {
             $('#carTb tbody').html('') ;
