@@ -14,7 +14,7 @@ class ProductController extends Controller
     public function index(Request $request) {
 
         if($request->ajax()) {
-            $products = Product::select('products.id','products.name','products.description','products.price','brands.name AS brand')
+            $products = Product::select('products.name','products.description','products.price','brands.name AS brand')
                         ->join('brands','brands.id','=','products.brand_id')
                         ->get() ;
 
