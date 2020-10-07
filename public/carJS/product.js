@@ -90,7 +90,6 @@ $(document).ready(function() {
             url: '/admin/product/edit/'+id,
             dataType: 'json',
             success:function(data) {
-
                 $('.modal-title').text('Edit Record');
                 $('#action_button').val('Edit');
                 $('#action').val('Edit');
